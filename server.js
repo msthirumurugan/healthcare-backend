@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const dbConfig = require("./app/config/db.config");
+const bodyParser = require('body-parser')
 
 const app = express();
 
@@ -9,7 +10,7 @@ var corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
+app.use(bodyParser.json());
 app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
@@ -33,6 +34,8 @@ db.mongoose
 app.get("/", (req, res) => {
   res.json({ message: "Health check fine!" });
 });
+
+// app.use('/api', )
 
 // routes
 require("./app/routes/auth.routes")(app);
