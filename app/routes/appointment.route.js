@@ -9,4 +9,6 @@ router.get('/getLatestAppointments', [authJwt.verifyToken],appointmentController
 
 router.get('/getTodaysAppointments', [authJwt.verifyToken],appointmentController.getTodaysAppointments)
 
+router.get('/getPatientInfo/:patientId',[authJwt.verifyToken], appointmentController.getPatientInfo)
+
 module.exports  = router;

@@ -1,5 +1,6 @@
 const Appointment = require('../models/appointment.model')
 const User = require('../models/user.model')
+const logger = require('../config/logger')
 
 exports.createAppointment = async (req, res) => {
   try {
@@ -40,6 +41,7 @@ exports.createAppointment = async (req, res) => {
       appointment
     });
   } catch (error) {
+    logger.error(`error occured during creating the appointment error: ${error}`)
     res.status(500).json({
       error: error.message
     });
@@ -49,6 +51,7 @@ exports.createAppointment = async (req, res) => {
 exports.getLatestAppointments = async (req, res) => {
   try {
     const userId = req.userId;
+    logger.info(`the user id: ${userId}`)
     const latestAppointment = await Appointment.findOne({
         patientId: userId
       })
@@ -102,6 +105,30 @@ exports.getTodaysAppointments = async (req, res) => {
     });
 
   } catch (error) {
+    res.status(500).json({
+      error: error.message
+    });
+  }
+}
+
+exports.getPatientInfo = async (req, res) => {
+  try {
+    const patientId = req.params.patientId;
+    const doctorId = req.userId;
+
+    const PatientData = await User.findById(patientId)
+
+    const patientBookingHistory = await Appointment.find({ patientId, doctorId })
+    .sort({ date: 1, timeslot: 1 }) // Sort by date and timeslot
+    .populate('patientId', 'firstname lastname') // Populate patient details
+    .populate('doctorId', 'firstname lastname'); // Populate doctor details
+
+    if (patientBookingHistory.length === 0) {
+      return res.status(404).json({ message: 'No appointments found for the given patient and doctor' });
+    }
+
+    res.status(200).json({ message: 'Appointments retrieved successfully', PatientData, patientBookingHistory });
+  } catch(error) {
     res.status(500).json({
       error: error.message
     });
