@@ -100,3 +100,13 @@ exports.signin = async (req, res) => {
       .send({ message: err.message || "Some error occurred during signin." });
   }
 };
+
+exports.logout = async (req, res) => {
+  try {
+    // Need to implementing token blacklist
+    res.status(200).send({ message: "User logged out successfully." });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "Some error occurred during logout." });
+  }
+};
