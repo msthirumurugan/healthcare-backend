@@ -51,6 +51,14 @@ const userSchema = new mongoose.Schema({
     min: [0, 'Age cannot be negative'],
     max: [120, 'Age must be less than or equal to 120'],
   },
+  password: {
+    type: String,
+    required: [true, 'Password is required'],
+    minlength: [6, 'Password must be at least 6 characters'],
+  },
+  department: {
+    type: String,
+  }
 }, { timestamps: true });
 
 // Create the User model
