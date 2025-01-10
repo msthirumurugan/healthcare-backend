@@ -1,7 +1,7 @@
 const Appointment = require('../models/appointment.model')
 const User = require('../models/user.model')
 
-export const createAppointment = async (req,res) => {
+exports.createAppointment = async (req,res) => {
     try {
         const { patientId, doctorId, date, timeslot, appointmentDescription, additionalInfo } = req.body;
     

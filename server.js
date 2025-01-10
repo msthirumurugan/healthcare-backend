@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const dbConfig = require("./app/config/db.config");
 const bodyParser = require('body-parser')
+const appointmentRouter = require('./app/routes/appointment.route')
 
 const app = express();
 
@@ -34,6 +35,8 @@ db.mongoose
 app.get("/", (req, res) => {
   res.json({ message: "Health check fine!" });
 });
+
+app.use('/api/appointment', appointmentRouter)
 
 // app.use('/api', )
 
