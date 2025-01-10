@@ -1,5 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const appointmentController = require('../controllers/appointment.controller');
+const { authJwt } = require("../middlewares");
 
-router.post('/api/appointment', appointmentController.createAppointment)
+router.post('/', [authJwt.verifyToken],appointmentController.createAppointment)
+
+module.exports  = router;
