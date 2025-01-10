@@ -1,4 +1,3 @@
 module.exports = {
-  secret: "healthcare-secret-key",
+  secret: "healthcare-secret-key", //to be moved .env or secret manager
 };
-//to be moved .env or secret manager
