@@ -29,3 +29,22 @@ exports.createAppointment = async (req,res) => {
         res.status(500).json({ error: error.message });
       }
 }
+
+exports.getLatestAppointments = async (req,res) => {
+  try {
+    const userId  = req.userId;
+    const latestAppointment = await Appointment.findOne({ patientId: userId })
+      .sort({ date: -1, createdAt: -1 }) // Sort by latest date and time
+      .populate('doctorId', 'firstname lastname') // Populate doctor details if needed
+      .populate('patientId', 'firstname lastname'); // Populate patient details if needed
+
+    if (!latestAppointment) {
+      return res.status(404).json({ message: 'No appointments found for this user' });
+    }
+
+    res.status(200).json({ message: 'Latest appointment retrieved successfully', latestAppointment });
+  
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
